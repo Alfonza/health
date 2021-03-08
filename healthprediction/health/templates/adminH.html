@@ -1,0 +1,169 @@
+{%load static%}
+<html>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+    body{
+        background-color: rgba(203, 248, 248, 0.384);
+    }
+    .container-fluid{
+        background-color: rgb(31, 20, 20);
+        
+    }
+    #addDoctor{
+      z-index: 1050;
+      background-color: white;
+      height: 300px;
+      width: 200px;
+      border: black solid;
+      text-align: center;
+    }
+    #addPatient{
+      z-index: 1050;
+      background-color: white;
+      height: 250px;
+      width: 200px;
+      border: black solid;
+      text-align: center;
+    }
+    
+</style>
+    <body>
+        
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                
+              </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="back">Home</a></li>
+                  
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  <li><a href="adminlogout"><span class="glyphicon glyphicon-log-in"></span onclick='window.location.href="adminlogout"'> Logout</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        <div class='row justify-content-center' >
+            
+        <div class='col-lg-2'>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link active" onclick="load('doctordata')" >Doctor Details</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" onclick="load('patientdata')" >Patient Details</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" onclick="load('feedback')">Feedback</a>
+                </li>
+               
+                
+              </ul>
+        </div>
+        <div class='col-lg-10 '>
+            
+            <div id="table-responsive">
+
+              
+
+                   
+    
+          
+ 
+  
+  
+  
+ 
+              
+          </div>
+      </div>
+  </div>
+  
+  
+  <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+          <h4 class="modal-title custom_align" id="Heading">Edit Your Detail</h4>
+        </div>
+            <div class="modal-body">
+            <div class="form-group">
+          <input class="form-control " type="text" placeholder="Mohsin">
+          </div>
+          <div class="form-group">
+          
+          <input class="form-control " type="text" placeholder="Irshad">
+          </div>
+          <div class="form-group">
+          <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
+      
+          
+          </div>
+        </div>
+            <div class="modal-footer ">
+          <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+        </div>
+          </div>
+      <!-- /.modal-content --> 
+    </div>
+        <!-- /.modal-dialog --> 
+      </div>
+        </div>
+        </div>
+    </body>
+<script>
+$(document).ready(function(){
+$("#mytable #checkall").click(function () {
+        if ($("#mytable #checkall").is(':checked')) {
+            $("#mytable input[type=checkbox]").each(function () {
+                $(this).prop("checked", true);
+            });
+
+        } else {
+            $("#mytable input[type=checkbox]").each(function () {
+                $(this).prop("checked", false);
+            });
+        }
+    });
+    
+    $("[data-toggle=tooltip]").tooltip();
+});
+function load(page)
+{
+  $('#table-responsive').load(page)
+}
+load('doctordata')
+function add_new(id){
+
+  document.getElementById(id).style.display='block'
+} 
+
+
+function deleterowP(id){
+  window.location.href='deleterowofP?rowid='+id; 
+  
+}
+function deleterowD(id){
+  window.location.href='deleterowofD?rowid='+id; 
+  
+}
+function deleterowF(id){
+  window.location.href='deleterowofF?rowid='+id; 
+  
+}
+</script></html>
