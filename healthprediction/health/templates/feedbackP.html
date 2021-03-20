@@ -35,6 +35,25 @@
             border-bottom: 2px solid rgb(17, 17, 20);
 
         }
+        .but2{
+            position: relative;
+            left: 1070px;
+             top: -8px;
+            cursor: pointer;
+              border: 1px solid #eaeef1;
+              background-color: transparent;
+              height: 31px;
+              width: 91px;
+              font-size: 20px;
+              font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+              box-shadow: 0 6px 6px rgb(0 0 0 / 60%);
+              color: #191f24;
+              
+        }
+        .but2:hover{
+            background-color: red;
+            color: white;
+        }
         button{
             background-color: black;
             color: white;
@@ -44,6 +63,9 @@
         }
     </style>
 <body>
+    <button  class="but2" onclick="backpatient({{patientid}})">Back</button>
+    <button class="but2"onclick=logout() > Logout</button>
+    <button class="but2"onclick=backhm() > Home</button>
     <div id="feedback">
         
             <form action="addfeedback" method="GET" >
@@ -57,6 +79,15 @@
     </div>
 </body>
 <script>
-    
+    function backpatient(patientid){
+        console.log(patientid)
+        window.location.href='backpatient?patientid='+patientid;
+      }
+      function backhm(){
+        window.location.href='back'
+    }
+    function logout(){
+        window.location.href='patientlogout'
+    }
 </script>
 </html>

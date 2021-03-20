@@ -17,7 +17,7 @@
         }
         #div1{
             position: relative;
-                top: -150px;
+                top: -220px;
                 text-align: center;
                 
                 width: 369px;
@@ -61,36 +61,27 @@
             position: relative;
             left: -220px;
         }
-        #chat,#logout,#home,#feedback{
+        .but{
             position: relative;
-            top: -620px;
-            left: 700px;
-            background-color: rgb(250, 248, 248);
-            color:rgb(235, 37, 37);
-            border-color: transparent;
-            height: 30px;
-            width: 80px;
-            box-shadow: 10px 10px 5px grey;
-        
-
+            left: 800px;
+            top: -150px;
+            cursor: pointer;
+              border: 1px solid #3498db;
+              background-color: transparent;
+              height: 31px;
+                width: 100px;
+                font-size: 15px;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+              box-shadow: 0 6px 6px rgb(0 0 0 / 60%);
+              color: #191f24;
+              
+              
         }
-        #qstn{
-            position: relative;
-            top: -650px;
-            left: 930px;
-            background-color: rgb(250, 248, 248);
-            color:rgb(235, 37, 37);
-            border-color: transparent;
-            height: 30px;
-            width: 80px;
-            box-shadow: 10px 10px 5px grey;
-        }
-       
         
         #update{
             position: relative;
-            background-color: black;
-            color: white;
+            background-color: transparent;
+            color: black;
             width: 250px;
             height: 40px;
             border-radius: 10px;
@@ -99,8 +90,8 @@
         }
        
         #update:hover{
-            background-color: white;
-            color: #000;
+            background-color: rgb(241, 38, 38);
+            color: rgb(248, 244, 244);
             font-weight: bold;
         }
         #username:hover,#password:hover,#phone:hover{
@@ -109,7 +100,7 @@
             outline: 0;
             border-bottom: 2px solid rgb(17, 17, 17);
         }
-        #chat:hover,#logout:hover,#home:hover,#qstn:hover,#feedback:hover{
+        .but:hover{
             background-color: red;
             color: white;
         }
@@ -121,7 +112,12 @@
         <div id="main">
             <img src="{% static 'img/canadian-specialist-hospital_52d7a0cc13bd9.jpg' %}" alt="My image2"> 
         </div>
-        
+        <button class="but" onclick="msg({{patient.0}})" name="chat">MESSAGE</button>
+        <button class="but" onclick=logout() name=logout> LOGOUT</button>
+        <button class="but" onclick=backhm() name=home> HOME</button>
+        <button class="but" onclick="feedback({{patient.0}})">FEEDBACK</button>
+        <button class="but" onclick="qstn({{patient.0}})">QUESTION</button>
+        <hr>
         <div id="div1">
             
                 
@@ -141,15 +137,11 @@
         <br><br><br>
         <button id='update' onclick="send_update()" name="update" type="submit">UPDATE</button>
         <br><br><br>
-        <button id="chat" onclick="msg()" name="chat">MESSAGE</button>&nbsp;&nbsp;
-        <button id='logout' onclick=logout() name=logout> LOGOUT</button>&nbsp;&nbsp;
-        <button id='home' onclick=backhm() name=home> HOME</button>
-        <button id="feedback" onclick="feedback()">FEEDBACK</button>
-        <button id="qstn" onclick="qstn()">QUESTION</button>
+        
        
         <script>
            email='{{patient.2}}'
-           
+           doctorid=0
             
             function send_update(){
                 patientname=document.getElementById('username').value 
@@ -157,8 +149,8 @@
                 password=document.getElementById('password').value
                 window.location.href='updatepatient?name='+patientname+'&phone='+phone+'&password='+password;
             }
-            function msg(){
-                window.location.href='msgP'
+            function msg(id){
+                window.location.href='msgP?patientid='+id+'&doctorid='+doctorid;
             
             } 
             function backhm(){
@@ -168,12 +160,14 @@
                 window.location.href='patientlogout'
             }
             
-            function feedback(){
-                
-                window.location.href='patientfeedback'
+            function feedback(id){
+                patientid=id
+                window.location.href='patientfeedback?patientid='+patientid;
             }
-            function qstn(){
-                window.location.href='questionanswer'
+            function qstn(id){
+                console.log(id)
+                patientid=id
+                window.location.href='questionanswer?patientid='+patientid;
             }
         </script>
     </div>

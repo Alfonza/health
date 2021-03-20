@@ -3,6 +3,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <style>
 body{
   background-color: black;
@@ -82,6 +83,23 @@ img{
     height: 30px;
     text-align: center;
 }
+.btn{
+  position: relative;
+  left: 880px;
+  cursor: pointer;
+    border: 1px solid #3498db;
+    background-color: transparent;
+    height: 31px;
+    width: 91px;
+    color: #01070a;
+    font-size: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    box-shadow: 0 6px 6px rgb(0 0 0 / 60%);
+}
+.btn:hover{
+  background-color: red;
+  color: white;
+}
 #butmsgsend{
     background-color: black;
     color: white;
@@ -97,7 +115,7 @@ img{
 
 }
 #msgbody{
-    top: -510px;
+    top: -460px;
     height: 615px;
     width: 193%;
     left: 301px;
@@ -106,6 +124,15 @@ img{
 #sendMsg{
     position: relative;
     left: 2px;
+}
+table, td, th {
+  border: 1px solid black;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #e6dfdf;
 }
 #msgdisplay{
   border-color: transparent;
@@ -126,50 +153,68 @@ img{
 
     </div>
     <div id="viewmsg">
+      <button class="btn" onclick="backdoctor({{doctorid}})">Back</button>
+      <button class="btn" onclick="logout()">Logout</button>
+      <button class="btn" onclick="backhm()">Home</button>
     <div id="listName">
      
     {% for name in patientname%}
-    <button id="msgdisplay" onclick="displaymsg()" value="{{name}}">{{name.0}}</button>
+    <button id="msgdisplay" onclick="displaymsg({{name.0}})" >{{name.1}}</button>
     <hr>
     {% endfor %}
     
 </div>
 
-<div id="msgbody" style="display: block;">
-    <h2>patient.Name</h2>
-<div class="container">
+<div id="msgbody" >
+  <div id=querytable>
+    <table>
+      <thead>
+        <th>MESSAGE</th>
+        <th>STATUS</th>
+        <th></th>
+      </thead>
+      <tbody id='tbody'>
+        {% for msg in messagedata %}
+        <tr><td>{{msg.1}}</td>
+        <td>{{msg.2}}</td>
+        <td><button onclick="replaymsg({{msg.0}})">Replay</button></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>  
+  <div id="container" style="display: none;">
   
-  <p>Hello. How are you today?</p>
-  <span class="time-right">11:00</span>
-</div>
-
-<div class="container darker">
   
-  <p>Hey! I'm fine. Thanks for asking!</p>
-  <span class="time-left">11:01</span>
-</div>
-
-<div class="container">
-  
-  <p>Sweet! So, what do you wanna do today?</p>
-  <span class="time-right">11:02</span>
-</div>
-
-<div class="container darker">
-  
-  <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
-  <span class="time-left">11:05</span>
-</div>
-<div id="sendMsg">
-<input id="typemsg" type="text" placeholder="type here.....">
-<button onclick="sendMsg()"id="butmsgsend">SEND</button>
-</div>
-</div>
+    <div id="sendMsg">
+      <input id="typemsg" type="text" placeholder="type here.....">
+      <button onclick="sendRply(replaymsg.messageid,doctorid)"id="butmsgsend">SEND</button>
+    </div>
+  </div>
 </div>
 </body>
-><script>
-  function displaymsg(){
-    window.location.href='displaymsg?name='+name
+<script>
+  doctorid='{{doctorid}}'
+  function backdoctor(id){
+    doctorid=id
+    window.location.href='backdoctor?doctorid='+doctorid;
   }
+ function replaymsg(messageid){
+  replaymsg.messageid=messageid
+   //console.log(replaymsg.messageid)
+  document.getElementById('container').style.display='block';
+ }
+ function sendRply(messageid,doctorid){
+   msg=document.getElementById('typemsg').value
+   console.log(messageid,doctorid,msg)
+   window.location.href='rplymsg?doctorid='+doctorid+'&messageid='+messageid+'&msg='+msg;
+  
+  
+ }
+ function backhm(){
+  window.location.href='back'
+}
+function logout(){
+  window.location.href='doctorlogout'
+}
 </script>
 </html>

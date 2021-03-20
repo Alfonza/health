@@ -3,8 +3,11 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <style>
-
+body{
+  background-color: black;
+}
 #main{
     position: relative;
         
@@ -94,8 +97,17 @@ img{
    
 
 }
+table, td, th {
+  border: 1px solid black;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #e6dfdf;
+}
 #msgbody{
-    top: -510px;
+    top: -490px;
     height: 615px;
     width: 193%;
     left: 301px;
@@ -103,7 +115,12 @@ img{
 }
 #sendMsg{
     position: relative;
+    
     left: 2px;
+}
+.container{
+  position: relative;
+  top: 76px;
 }
 #msgdisplay{
   border-color: transparent;
@@ -116,6 +133,23 @@ img{
   color: rgb(55, 55, 230);
   font-weight: bolder;
 }
+.btn { 
+  position: relative;
+  left: -165px;
+  cursor: pointer;
+    border: 1px solid #3498db;
+    background-color: transparent;
+    height: 31px;
+    width: 91px;
+    color: #01070a;
+    font-size: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    box-shadow: 0 6px 6px rgb(0 0 0 / 60%);
+}
+.btn:hover{
+  background-color: red;
+  color: white;
+}
 </style>
 </head>
 <body>
@@ -124,45 +158,107 @@ img{
 
     </div>
     <div id="viewmsg">
+      <button class="btn"  onclick="backpatient({{patientid}})">Back</button>
+      <button class="btn" onclick=logout() > Logout</button>
+        <button class="btn" onclick=backhm() > Home</button>
     <div id="listName">
-      {%for name in doctorname %}
-      <button id="msgdisplay">{{name.0}}</button>
+      {%for data in doctordatas %}
+      <button id="msgdisplay"  onclick="loadmsg({{data.0}})">{{data.1}}</button>
    
       <hr>
       {%endfor %}
       
 </div>
 
-<div id="msgbody">
-    <h2>Dr.Name</h2>
+<div id="msgbody" style="display: none;">
+  <div id=querytable>
+    <table id="patientmsgtable">
+      <thead>
+        <th>MESSAGE</th>
+        <th>STATUS</th>
+        
+      </thead>
+      <tbody id='tbody'>
+        {% for q in queries %}
+        <tr class="queries  D{{q.1}}" style="display: none;">
+          <td>{{q.3}}</td>
+          <td>{{q.4}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>  
+
 <div class="container">
   
-  <p>Hello. How are you today?</p>
-  <span class="time-right">11:00</span>
-</div>
-
-<div class="container darker">
-  
-  <p>Hey! I'm fine. Thanks for asking!</p>
-  <span class="time-left">11:01</span>
-</div>
-
-<div class="container">
-  
-  <p>Sweet! So, what do you wanna do today?</p>
-  <span class="time-right">11:02</span>
-</div>
-
-<div class="container darker">
-  
-  <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
-  <span class="time-left">11:05</span>
-</div>
 <div id="sendMsg">
 <input id="typemsg" type="text" placeholder="type here.....">
-<button onclick="sendMsg()"id="butmsgsend">SEND</button>
+<button onclick="sendMsg({{patientid}})"id="butmsgsend">SEND</button>
 </div>
 </div>
 </div>
 </body>
+<script>
+  var docid=-1;
+  function loadmsg(doctorid){
+    //console.log(doctorid)
+    data=document.getElementsByClassName('queries')
+    //console.log(docid)
+    for( var i = 0 ; i <data.length; i++){
+      //console.log(data[i])
+      data[i].style.display='none';
+
+
+    }
+    document.getElementById('msgbody').style.display='block';
+    docid=doctorid;
+    //console.log(document.getElementsByClassName('D'+docid))
+    data=document.getElementsByClassName('D'+docid)
+    console.log(data)
+    for( var i = 0 ; i <data.length; i++){
+      //console.log(data[i])
+      data[i].style.display='table-row';
+
+
+    }
+      
+    
+  }
+  function backhm(){
+    window.location.href='back'
+}
+function logout(){
+    window.location.href='patientlogout'
+}
+  function backpatient(patientid){
+    console.log(patientid)
+    window.location.href='backpatient?patientid='+patientid;
+  }
+  function sendMsg(patientid){
+   //console.log(docid,patientid)
+   patientid=patientid
+  // docid=docid
+    msg=document.getElementById('typemsg').value
+   // window.location.href='sendmsgP?doctorid='+docid+'&patientid='+patientid+'&msg='+msg;
+    $.get('sendmsgP?doctorid='+docid+'&patientid='+patientid+'&msg='+msg, function(data){
+        //console.log(queries)
+        //for(i=0;i<length(queries);i++){
+
+        //}
+        
+        $('body').load('msgP?patientid='+patientid+'&doctorid='+docid,function(data){
+          console.log(docid)
+          //loadmsg(docid)
+        });
+        
+          console.log(docid)
+          //loadmsg(docid)
+        
+        
+      //console.log('D'+docid)
+    }); 
+    loadmsg(docid)
+  }
+  
+</script>
 </html>

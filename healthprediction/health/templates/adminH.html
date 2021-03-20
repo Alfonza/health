@@ -15,6 +15,18 @@
         background-color: rgb(31, 20, 20);
         
     }
+    .btn{
+      position: relative;
+            cursor: pointer;
+              border: 1px solid #3498db;
+              background-color: transparent;
+              height: 31px;
+                width: 100px;
+                font-size: 15px;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+              box-shadow: 0 6px 6px rgb(0 0 0 / 60%);
+              color: #191f24;
+    }
     #addDoctor{
       z-index: 1050;
       background-color: white;
@@ -94,38 +106,91 @@
   </div>
   
   
-  <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+  <div class="modal fade" id="editD" tabindex="-1" role="dialog" aria-labelledby="edit" style="display: none;" >
         <div class="modal-dialog">
-      <div class="modal-content">
+          <div class="modal-content">
             <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-          <h4 class="modal-title custom_align" id="Heading">Edit Your Detail</h4>
-        </div>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+              <h4 class="modal-title custom_align" id="Heading">Edit Your Detail</h4>
+            </div>
             <div class="modal-body">
-            <div class="form-group">
-          <input class="form-control " type="text" placeholder="Mohsin">
-          </div>
-          <div class="form-group">
+              <div class="form-group">
+                <input class="form-control " id="editnameD" type="text" placeholder="Name" value="{{doctordata.0}}">
+              </div>
+              <div class="form-group">
           
-          <input class="form-control " type="text" placeholder="Irshad">
-          </div>
-          <div class="form-group">
-          <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
-      
+                <input class="form-control " id="editemailD" type="text" placeholder="email"value="{{doctordata.1}}">
+              </div>
+              <div class="form-group">
+                <input class="form-control " id="editpasswordD" type="text" placeholder="password"value="{{doctordata.2}}">
           
-          </div>
-        </div>
+               </div>
+              <div class="form-group">
+                <input class="form-control " id="editphonenumD" type="text" placeholder="phonenumber"value="{{doctordata.3}}">
+          
+              </div>
+              <div class="form-group">
+                <input class="form-control " id="editspecializationD" type="text" placeholder="specialization"value="{{doctordata.4}}">
+          
+              </div>
+
+            </div>
             <div class="modal-footer ">
-          <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-        </div>
+              <button type="button" class="btn btn-warning btn-lg" style="width: 100%;" onclick="editdoctordata(editpagedispalyD.doctorid)"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+            </div>
           </div>
-      <!-- /.modal-content --> 
-    </div>
-        <!-- /.modal-dialog --> 
+          <!-- /.modal-content --> 
+          </div>
+          <!-- /.modal-dialog --> 
+        </div>
       </div>
+
+
+
+        <div class="modal fade" id="editP" tabindex="-1" role="dialog" aria-labelledby="edit" style="display: none;" >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                <h4 class="modal-title custom_align" id="Heading">Edit Your Detail</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <input class="form-control " id="editnameP" type="text" placeholder="Name" value="{{patientdata.0}}">
+                </div>
+                <div class="form-group">
+            
+                  <input class="form-control " id="editemailP" type="text" placeholder="email"value="{{patientdata.1}}">
+                </div>
+                <div class="form-group">
+                  <input class="form-control " id="editpasswordP" type="text" placeholder="password"value="{{patientdata.2}}">
+            
+                 </div>
+                <div class="form-group">
+                  <input class="form-control " id="editphonenumP" type="text" placeholder="phonenumber"value="{{patientdata.3}}">
+            
+                </div>
+                <div class="form-group">
+                  <input class="form-control " id="editstatusP" type="text" placeholder="status"value="{{patientdata.4}}">
+            
+                </div>
+  
+              </div>
+              <div class="modal-footer ">
+                <button type="button" class="btn btn-warning btn-lg" style="width: 100%;" onclick="editpatientdata(editpagedispalyP.patientid)"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+              </div>
+            </div>
+            <!-- /.modal-content --> 
+            </div>
+            <!-- /.modal-dialog --> 
+          </div>
+          </div>
         </div>
         </div>
     </body>
+
+
+
 <script>
 $(document).ready(function(){
 $("#mytable #checkall").click(function () {
@@ -155,15 +220,91 @@ function add_new(id){
 
 
 function deleterowP(id){
-  window.location.href='deleterowofP?rowid='+id; 
-  
+  //window.location.href='deleterowofP?rowid='+id; 
+  $.get('deleterowofP?rowid='+id, function(data){
+    load('patientdata')
+  });
 }
 function deleterowD(id){
-  window.location.href='deleterowofD?rowid='+id; 
-  
+  console.log(id)
+  //window.location.href='deleterowofD?rowid='+id; 
+  $.get('deleterowofD?rowid='+id, function(data){
+    load('doctordata')
+  });
 }
 function deleterowF(id){
-  window.location.href='deleterowofF?rowid='+id; 
+ // window.location.href='deleterowofF?rowid='+id; 
+  $.get('deleterowofF?rowid='+id, function(data){
+    load('feedback')
+  });
+}
+function editdoctordata(doctorid){
+  doctorid=doctorid
+  console.log(doctorid)
+  doctorname=document.getElementById('editnameD').value 
+  email=document.getElementById('editemailD').value 
+  phonenum=document.getElementById('editphonenumD').value 
+  password=document.getElementById('editpasswordD').value 
+  specialist=document.getElementById('editstatusD').value 
+  console.log(doctorname,email,phonenum,password,specialist)
+  //window.location.href='editdoctordata?doctorid='+doctorid+'&name='+doctorname+'&phone='+phonenum+'&password='+password+'&specialist='+specialist;
+  $.get('editdoctordata?doctorid='+doctorid+'&name='+doctorname+'&email='+email+'&phone='+phonenum+'&password='+password+'&specialist='+specialist,function(data){
+     load('doctordata')
+    cls=document.getElementsByClassName('modal fade')
+     console.log(cls)
+     for( var i = 0 ; i <cls.length; i++){
+         console.log(cls[i])
+         cls[i].style.display='none';
+   
+ } 
+ //document.getElementById('editD').style.display='none'
+  });
   
+   
+  
+}
+function editpatientdata(patientid){
+  patientid=patientid
+  console.log(patientid)
+  patientname=document.getElementById('editnameP').value 
+  email=document.getElementById('editemailP').value 
+  phonenum=document.getElementById('editphonenumP').value 
+  password=document.getElementById('editpasswordP').value 
+  status=document.getElementById('editstatusP').value 
+  console.log(patientname,email,phonenum,password,status)
+  //window.location.href='editdoctordata?doctorid='+doctorid+'&name='+doctorname+'&phone='+phonenum+'&password='+password+'&specialist='+specialist;
+  $.get('editpatientdata?patientid='+patientid+'&name='+patientname+'&email='+email+'&phone='+phonenum+'&password='+password+'&status='+status,function(data){
+    load('patientdata')
+     //document.getElementById('editP').style.display='none'
+     cls=document.getElementsByClassName('modal fade')
+     console.log(cls)
+     for( var i = 0 ; i <cls.length; i++){
+         console.log(cls[i])
+         cls[i].style.display='none';
+   
+ } 
+  });
+  
+   
+  
+}
+function editpagedispalyD(doctorid){
+  editpagedispalyD.doctorid=doctorid
+  console.log(doctorid)
+  //window.location.href='getdoctordata?doctorid='+doctorid;
+ $.get('getdoctordata?doctorid='+doctorid,function(data){
+    document.getElementById('editD').style.display='block'
+      
+  });
+
+}
+function editpagedispalyP(patientid){
+  editpagedispalyP.patientid=patientid
+  console.log(patientid)
+  $.get('getpatientdata?patientid='+patientid,function(data){
+      document.getElementById('editP').style.display='block'
+      
+  });
+
 }
 </script></html>

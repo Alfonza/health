@@ -27,3 +27,4 @@ class messages(models.Model):
     doctorid=models.IntegerField()
     patientid=models.IntegerField()
     message=models.CharField(max_length=200)
+    replay=models.CharField(max_length=200,blank=True,null=True)

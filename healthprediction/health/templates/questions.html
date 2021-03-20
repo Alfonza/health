@@ -36,6 +36,26 @@
            
             border-bottom: 2px solid rgb(17, 17, 20);
         }
+        .but{
+            position: relative;
+            left: 1070px;
+    top: -8px;
+            cursor: pointer;
+              border: 1px solid #eaeef1;
+              background-color: transparent;
+              height: 31px;
+                width: 91px;
+                font-size: 20px;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+              box-shadow: 0 6px 6px rgb(0 0 0 / 60%);
+              color: #191f24;
+              
+              
+        }
+        .but:hover{
+            background-color: red;
+            color: white;
+        }
         
         
         button{
@@ -48,25 +68,31 @@
     </style>
 
 <body>
+    <button class="but" onclick="backpatient({{patientid}})">Back</button>
+    <button class="but"onclick=logout() > Logout</button>
+    <button class="but"onclick=backhm() > Home</button>
     <div id="question">
         <br>
             <input id="q1" placeholder="Do you have temparature?"><br><br>
-            <input id="q2" placeholder="Do you have headache?"><br><br>
+            <input id="q2" placeholder="Do you suffer headache?"><br><br>
             <input id="q3" placeholder="Do you have cold?"><br><br>
-            <input id="q4" placeholder="Did you suffer any weaknes in body?"><br><br>
-            <input id="q5" placeholder="ajshik"><br><br>
-            <input id="q6" placeholder="Do you have any difficulty breathing?"><br><br>
+            <input id="q4" placeholder="Do you suffer any weaknes in body?"><br><br>
+            <input id="q5" placeholder="Do u suffer sour throught?"><br><br>
+            <input id="q6" placeholder="Do you suffer any difficulty breathing?"><br><br>
             <input id="q7" placeholder="do you suffer this symptom for more than 10 days?"><br><br>
-            <input id="q8" placeholder="Do you have temparature?"><br><br>
-            <input id="q9" placeholder="Do you have temparature?"><br><br>
-            <input id="q10" placeholder="Do you have temparature?"><br><br>
+            <input id="q8" placeholder="Do you suffer pain in any body part?"><br><br>
+            <input id="q9" placeholder="Do you suffer irregular sleep?"><br><br>
+            <input id="q10" placeholder="Any medicine did you take before?"><br><br>
             <button onclick="questions()">Submit</button>
 
     </div>
 </body>
 <script>
     email='{{email}}'
-    
+    function backpatient(patientid){
+        console.log(patientid)
+        window.location.href='backpatient?patientid='+patientid;
+      }
     function questions(){
      
         marks=0
@@ -111,6 +137,12 @@
         
         window.location.href='updatestatuspatient?status='+status+'&email='+email;
 
+    }
+    function backhm(){
+        window.location.href='back'
+    }
+    function logout(){
+        window.location.href='patientlogout'
     }
 </script>
 </html>
