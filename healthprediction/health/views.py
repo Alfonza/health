@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from .models import doctors,patients,feedbacks,messages
 from django.db import connection
-
-
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import mysql.connector
+import json
 # Create your views here.
 
 def home(request):
@@ -155,7 +155,9 @@ def getdoctordata(request):
     doctordata=doctordata[0]
     print(doctordata)
     cursor.close()
-    return render(request,'doctor_data.html',{"doctordata":doctordata})
+    #return render(request,'doctor_data.html',{"doctordata":doctordata})
+    data=json.dumps(doctordata)
+    return HttpResponse(data)
 def getpatientdata(request):
     id=request.GET['patientid']
     print(id)
@@ -166,7 +168,9 @@ def getpatientdata(request):
     patientdata=patientdata[0]
     print(patientdata)
     cursor.close()
-    return render(request,'patient_data.html',{"patientdata":patientdata})
+    #return render(request,'patient_data.html',{"patientdata":patientdata})
+    data=json.dumps(patientdata)
+    return HttpResponse(data)
 def editdoctordata(request):
     id=request.GET['doctorid']
     name=request.GET['name']

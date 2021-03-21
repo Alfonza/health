@@ -291,9 +291,17 @@ function editpatientdata(patientid){
 function editpagedispalyD(doctorid){
   editpagedispalyD.doctorid=doctorid
   console.log(doctorid)
+  console.log('{{doctors}}')
+
   //window.location.href='getdoctordata?doctorid='+doctorid;
  $.get('getdoctordata?doctorid='+doctorid,function(data){
     document.getElementById('editD').style.display='block'
+    var data = JSON.parse(data);
+    document.getElementById('editnameD').value = data[0]
+  document.getElementById('editemailD').value  = data[1]
+  document.getElementById('editphonenumD').value  = data[2]
+  document.getElementById('editpasswordD').value  = data[3]
+  document.getElementById('editspecializationD').value  = data[4]
       
   });
 
@@ -303,7 +311,12 @@ function editpagedispalyP(patientid){
   console.log(patientid)
   $.get('getpatientdata?patientid='+patientid,function(data){
       document.getElementById('editP').style.display='block'
-      
+      var data = JSON.parse(data);
+    document.getElementById('editnameP').value = data[0]
+  document.getElementById('editemailP').value  = data[1]
+  document.getElementById('editphonenumP').value  = data[2]
+  document.getElementById('editpasswordP').value  = data[3]
+  document.getElementById('editstatusP').value  = data[4]
   });
 
 }
