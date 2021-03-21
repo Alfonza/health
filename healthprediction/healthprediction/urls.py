@@ -16,7 +16,9 @@ Including another URLconf
 from django.urls import path,include
 from health import views 
 urlpatterns = [
+    
     path('',views.home,name='home'),
+    path('welcome',views.home,name='home'),
     path('admin/',views.admin,name='admin'),
     path('adm_login',views.adm_login,name='adm_login'),
     path('add',views.add,name='add'),
