@@ -59,7 +59,7 @@
               </div>
               <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                  <li class="active"><a href="back">Home</a></li>
+                  <li class="active"><a href="backad">Home</a></li>
                   
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -115,22 +115,22 @@
             </div>
             <div class="modal-body">
               <div class="form-group">
-                <input class="form-control " id="editnameD" type="text" placeholder="Name" value="{{doctordata.0}}">
+                <input class="form-control " id="editnameD" type="text"  value="{{doctordata.0}}">
               </div>
               <div class="form-group">
           
-                <input class="form-control " id="editemailD" type="text" placeholder="email"value="{{doctordata.1}}">
+                <input class="form-control " id="editemailD" type="text" value="{{doctordata.1}}">
               </div>
               <div class="form-group">
-                <input class="form-control " id="editpasswordD" type="text" placeholder="password"value="{{doctordata.2}}">
+                <input class="form-control " id="editpasswordD" type="text" value="{{doctordata.2}}">
           
                </div>
               <div class="form-group">
-                <input class="form-control " id="editphonenumD" type="text" placeholder="phonenumber"value="{{doctordata.3}}">
+                <input class="form-control " id="editphonenumD" type="text" value="{{doctordata.3}}">
           
               </div>
               <div class="form-group">
-                <input class="form-control " id="editspecializationD" type="text" placeholder="specialization"value="{{doctordata.4}}">
+                <input class="form-control " id="editspecializationD" type="text" value="{{doctordata.4}}">
           
               </div>
 
@@ -156,22 +156,22 @@
               </div>
               <div class="modal-body">
                 <div class="form-group">
-                  <input class="form-control " id="editnameP" type="text" placeholder="Name" value="{{patientdata.0}}">
+                  <input class="form-control " id="editnameP" type="text"  value="{{patientdata.0}}">
                 </div>
                 <div class="form-group">
             
-                  <input class="form-control " id="editemailP" type="text" placeholder="email"value="{{patientdata.1}}">
+                  <input class="form-control " id="editemailP" type="text" value="{{patientdata.1}}">
                 </div>
                 <div class="form-group">
-                  <input class="form-control " id="editpasswordP" type="text" placeholder="password"value="{{patientdata.2}}">
+                  <input class="form-control " id="editpasswordP" type="text" value="{{patientdata.2}}">
             
                  </div>
                 <div class="form-group">
-                  <input class="form-control " id="editphonenumP" type="text" placeholder="phonenumber"value="{{patientdata.3}}">
+                  <input class="form-control " id="editphonenumP" type="text" value="{{patientdata.3}}">
             
                 </div>
                 <div class="form-group">
-                  <input class="form-control " id="editstatusP" type="text" placeholder="status"value="{{patientdata.4}}">
+                  <input class="form-control " id="editstatusP" type="text" value="{{patientdata.4}}">
             
                 </div>
   
@@ -245,7 +245,7 @@ function editdoctordata(doctorid){
   email=document.getElementById('editemailD').value 
   phonenum=document.getElementById('editphonenumD').value 
   password=document.getElementById('editpasswordD').value 
-  specialist=document.getElementById('editstatusD').value 
+  specialist=document.getElementById('editspecializationD').value 
   console.log(doctorname,email,phonenum,password,specialist)
   //window.location.href='editdoctordata?doctorid='+doctorid+'&name='+doctorname+'&phone='+phonenum+'&password='+password+'&specialist='+specialist;
   $.get('editdoctordata?doctorid='+doctorid+'&name='+doctorname+'&email='+email+'&phone='+phonenum+'&password='+password+'&specialist='+specialist,function(data){
@@ -255,8 +255,10 @@ function editdoctordata(doctorid){
      for( var i = 0 ; i <cls.length; i++){
          console.log(cls[i])
          cls[i].style.display='none';
+         
    
  } 
+ $('.modal-backdrop').remove();
  //document.getElementById('editD').style.display='none'
   });
   
@@ -283,6 +285,7 @@ function editpatientdata(patientid){
          cls[i].style.display='none';
    
  } 
+ $('.modal-backdrop').remove();
   });
   
    

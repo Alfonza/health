@@ -37,15 +37,15 @@
         }
         .but2{
             position: relative;
-            left: 1070px;
-             top: -8px;
+            right: -700px;
+    top: -8px;
             cursor: pointer;
               border: 1px solid #eaeef1;
               background-color: transparent;
               height: 31px;
-              width: 91px;
-              font-size: 20px;
-              font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+              width: 120px;
+                font-size: 20px;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
               box-shadow: 0 6px 6px rgb(0 0 0 / 60%);
               color: #191f24;
               
@@ -63,15 +63,18 @@
         }
     </style>
 <body>
-    <button  class="but2" onclick="backpatient({{patientid}})">Back</button>
-    <button class="but2"onclick=logout() > Logout</button>
-    <button class="but2"onclick=backhm() > Home</button>
+    <button class="but2" onclick=backhmp({{patientid}}) name=home> HOME</button>
+        <button class="but2" onclick="msg({{patientid}})" name="chat">MESSAGE</button>
+        <button class="but2" onclick="feedback({{patientid}},email)">FEEDBACK</button>
+        <button class="but2" onclick="qstn({{patientid}})">QUESTION</button>
+        <button class="but2" onclick=logout() name=logout> LOGOUT</button>
+    
     <div id="feedback">
         
             <form action="addfeedback" method="GET" >
                 
-            <input id="email" name="email" placeholder="enter your emailid"><br><br>
             <input id="fdbk" name="feedbackP" placeholder="type your feedback"><br><br>
+            
             <button type="submit">SUBMIT</button>
             
 
@@ -79,15 +82,29 @@
     </div>
 </body>
 <script>
-    function backpatient(patientid){
-        console.log(patientid)
-        window.location.href='backpatient?patientid='+patientid;
-      }
-      function backhm(){
-        window.location.href='back'
+    email='{{email}}'
+    doctorid='{{docid}}'
+    function msg(id){
+        window.location.href='msgP?patientid='+id+'&doctorid='+doctorid;
+    
+    } 
+    function backhmp(id){
+        id=id
+        window.location.href='backp?id='+id;
     }
     function logout(){
         window.location.href='patientlogout'
+    }
+    
+    function feedback(id,email){
+        patientid=id
+        email=email
+        window.location.href='patientfeedback?patientid='+patientid+'&email='+email;
+    }
+    function qstn(id){
+        console.log(id)
+        patientid=id
+        window.location.href='questionanswer?patientid='+patientid;
     }
 </script>
 </html>
