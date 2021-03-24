@@ -29,11 +29,15 @@
     }
     #addDoctor{
       z-index: 1050;
-      background-color: white;
-      height: 300px;
-      width: 200px;
-      border: black solid;
+     
+      top: -294px;
+      background-color:white;
+      position: relative;
+      height: 400px;
+      width: 600px;
+      
       text-align: center;
+      box-shadow: 10px 10px 5px grey;
     }
     #addPatient{
       z-index: 1050;
@@ -43,6 +47,18 @@
       border: black solid;
       text-align: center;
     }
+    input{
+      text-align: center;
+      border: 0;
+      outline: 0;
+      border-bottom: 2px solid rgb(17, 17, 17);
+      width: 400px;
+      height: 40px;
+    }
+    input:hover{
+      border-bottom: 2px solid rgb(55, 57, 226);
+    }
+    
     
 </style>
     <body>
@@ -214,8 +230,12 @@ function load(page)
 }
 load('doctordata')
 function add_new(id){
+   
+    var popup = document.getElementById(id);
+    popup.classList.toggle("show");
+ 
 
-  document.getElementById(id).style.display='block'
+  
 } 
 
 
@@ -273,22 +293,25 @@ function editpatientdata(patientid){
   phonenum=document.getElementById('editphonenumP').value 
   password=document.getElementById('editpasswordP').value 
   status=document.getElementById('editstatusP').value 
-  console.log(patientname,email,phonenum,password,status)
+  var res = '^\+?1?\d{10}$';
+  var val=phonenum.match(res)
+  console.log(val)
+  if((phonenum.match(res)==null))
+        {
+          //console.log(val)
+          window.alert("please enter valid data");
+          
+           
+        }
+      else
+        {
+         window.alert(val)
+          
+       
+        }
+  //console.log(patientname,email,phonenum,password,status)
   //window.location.href='editdoctordata?doctorid='+doctorid+'&name='+doctorname+'&phone='+phonenum+'&password='+password+'&specialist='+specialist;
-  $.get('editpatientdata?patientid='+patientid+'&name='+patientname+'&email='+email+'&phone='+phonenum+'&password='+password+'&status='+status,function(data){
-    load('patientdata')
-     //document.getElementById('editP').style.display='none'
-     cls=document.getElementsByClassName('modal fade')
-     console.log(cls)
-     for( var i = 0 ; i <cls.length; i++){
-         console.log(cls[i])
-         cls[i].style.display='none';
-   
- } 
- $('.modal-backdrop').remove();
-  });
   
-   
   
 }
 function editpagedispalyD(doctorid){
@@ -302,8 +325,8 @@ function editpagedispalyD(doctorid){
     var data = JSON.parse(data);
     document.getElementById('editnameD').value = data[0]
   document.getElementById('editemailD').value  = data[1]
-  document.getElementById('editphonenumD').value  = data[2]
-  document.getElementById('editpasswordD').value  = data[3]
+  document.getElementById('editpasswordD').value  = data[2]
+  document.getElementById('editphonenumD').value  = data[3]
   document.getElementById('editspecializationD').value  = data[4]
       
   });
@@ -317,8 +340,8 @@ function editpagedispalyP(patientid){
       var data = JSON.parse(data);
     document.getElementById('editnameP').value = data[0]
   document.getElementById('editemailP').value  = data[1]
-  document.getElementById('editphonenumP').value  = data[2]
-  document.getElementById('editpasswordP').value  = data[3]
+  document.getElementById('editpasswordP').value  = data[2]
+  document.getElementById('editphonenumP').value  = data[3]
   document.getElementById('editstatusP').value  = data[4]
   });
 

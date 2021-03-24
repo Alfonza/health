@@ -1,4 +1,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    
+    
+</style>
 <table id="doctortable" class="hiddediv table table-bordred table-striped">
                        
     <thead>
@@ -32,15 +36,20 @@
 
       </tbody>
    </table>
-   
-  <div class="hiddediv" id="addDoctor" style="display: none;">
+   <div class="hiddediv" id="addDoctor" style="display: none;">
     
-    Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="addnameD" id="addnameD" required><br>
-    Password &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="addpassworD" id="addpasswodrdD" required><br>
-    Email  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="addemailD" id="addemailD" required><br>
-    Phonenumber &nbsp;<input name="addphoneD" id="addphoneD" required><br>
-    Specialist &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="addspecialistD"  id="addspecialistD" required><br>
-    <button id="ajaxBtnD">add</button>
+     <br>
+        &nbsp;&nbsp;<input name="addnameD" id="addnameD" required placeholder="name"><br><br>
+        <input name="addpassworD" id="addpasswodrdD" required placeholder="password"><br><br>
+        <input name="addemailD" id="addemailD" required placeholder="email"><br><br>
+        <input name="addphoneD" id="addphoneD" required placeholder="phonenumber"><br><br>
+        <input name="addspecialistD"  id="addspecialistD" required placeholder="specialist"><br><br>
+        <button id="ajaxBtnD">add</button>
+  </div>
+   
+  
+    
+    
     
 <script>
     $('#ajaxBtnD').click(function(){

@@ -181,9 +181,9 @@ def editdoctordata(request):
     phone=request.GET['phone']
     specialist=request.GET['specialist']
     email=request.GET['email']
-    match = re.match(r'^\+?1?\d{10,11}$', phone)
-    if match is None:
-        return render(request,'doctor_data.html',{"alert":'please add proper data'}) 
+    #match = re.match(r'^\+?1?\d{10,11}$', phone)
+    #if match is None:
+    #    return render(request,'doctor_data.html',{"alert":'please add proper data'}) 
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
     cursor.execute("UPDATE `health_doctors` SET `name`='"+name+"',`email`='"+email+"',`password`='"+password+"',`phonenum`="+phone+",`specialization`='"+specialist+"' WHERE id="+id)
