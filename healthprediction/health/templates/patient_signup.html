@@ -2,12 +2,15 @@
 <!DOCTYPE html>
 <html>
     <style>
+        body{
+            background-color: black;
+        }
         #main{
             position: relative;
                 
             text-align: center;
            
-            height: 150px;
+            height: 157px;
             width: 100%;
             background-position: center;
             background-repeat: no-repeat;
@@ -75,7 +78,7 @@
                 <input name='password' id='password' type='password' placeholder='password' required><br><br><br>
                 <input name='email' id='email' type='email' placeholder='email' required><br><br><br>
                 <input name='phone' id='phone' type='tel'  placeholder='phone' required><br><br>
-                
+                {{alert}}
                 <button  type="submit" id='signup'>SIGN UP</button>
                 
             </div>

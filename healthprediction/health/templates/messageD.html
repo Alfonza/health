@@ -127,13 +127,19 @@ img{
 }
 table, td, th {
   border: 1px solid black;
+  height: 44px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-align: center;
 }
 
 table {
   width: 100%;
+  
   border-collapse: collapse;
-  background-color: #e6dfdf;
+  background-color: #e06377;
 }
+tr:nth-child(even) {background-color:#f7cac9;}
+
 #msgdisplay{
   border-color: transparent;
   background-color: transparent;
@@ -145,6 +151,12 @@ table {
   color: rgb(55, 55, 230);
   font-weight: bolder;
 }
+button{
+  background-color: blue;
+  color: aliceblue;
+  width: 60px;
+  height: 30px;
+}
 </style>
 </head>
 <body>
@@ -153,9 +165,10 @@ table {
 
     </div>
     <div id="viewmsg">
-      <button class="btn" onclick="backdoctor({{doctorid}})">Back</button>
-      <button class="btn" onclick="logout()">Logout</button>
-      <button class="btn" onclick="backhm()">Home</button>
+      <button class="btn" onclick="backhmd({{doctorid}})" name=home> HOME</button>
+        <button  class="btn" onclick="msg({{doctorid}})" name="chat">MESSAGE</button>&nbsp;&nbsp;
+        <button class="btn" onclick="logout()" name=logout> LOGOUT</button>&nbsp;&nbsp;
+     
     <div id="listName">
      
     {% for name in patientname%}
@@ -168,7 +181,7 @@ table {
 <div id="msgbody" >
   <div id=querytable>
     <table>
-      <thead>
+      <thead style="background-color: #8181e0;">
         <th>MESSAGE</th>
         <th>STATUS</th>
         <th></th>
@@ -177,7 +190,13 @@ table {
         {% for msg in messagedata %}
         <tr><td>{{msg.1}}</td>
         <td>{{msg.2}}</td>
-        <td><button onclick="replaymsg({{msg.0}})">Replay</button></td></tr>
+       
+        {% if msg.2 == None %}
+        <td><button onclick="replaymsg({{msg.0}})">Replay</button></td>
+        {%else%}
+        <td>Replied</td>
+        {% endif %}
+        </tr>
         {% endfor %}
       </tbody>
     </table>
@@ -194,10 +213,10 @@ table {
 </body>
 <script>
   doctorid='{{doctorid}}'
-  function backdoctor(id){
+  /*function backdoctor(id){
     doctorid=id
     window.location.href='backdoctor?doctorid='+doctorid;
-  }
+  }*/
  function replaymsg(messageid){
   replaymsg.messageid=messageid
    //console.log(replaymsg.messageid)
@@ -210,8 +229,13 @@ table {
   
   
  }
- function backhm(){
-  window.location.href='back'
+ function msg(doctorid){
+  window.location.href='msgD?doctorid='+doctorid;
+
+}
+function backhmd(id){
+  id=id
+  window.location.href='backd?doctorid='+id;
 }
 function logout(){
   window.location.href='doctorlogout'

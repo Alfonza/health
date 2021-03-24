@@ -97,15 +97,22 @@ img{
    
 
 }
-table, td, th {
-  border: 1px solid black;
-}
-
 table {
   width: 100%;
+  
   border-collapse: collapse;
-  background-color: #e6dfdf;
+  background-color: #e06377;
 }
+
+table, td, th {
+  border: 1px solid black;
+  height: 44px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-align: center;
+}
+
+tr:nth-child(even) {background-color:#f7cac9;}
+
 #msgbody{
     top: -490px;
     height: 615px;
@@ -133,18 +140,29 @@ table {
   color: rgb(55, 55, 230);
   font-weight: bolder;
 }
+#btnqst{
+  position: relative;
+  right: -890px;
+  top: -30px;
+}
+#btnlgot{
+  position: relative;
+  right: -895px;
+  top: -30px;
+}
 .btn { 
   position: relative;
-  left: -165px;
-  cursor: pointer;
-    border: 1px solid #3498db;
-    background-color: transparent;
-    height: 31px;
-    width: 91px;
-    color: #01070a;
-    font-size: 20px;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    box-shadow: 0 6px 6px rgb(0 0 0 / 60%);
+            right: -580px;
+            top: 1px;
+            cursor: pointer;
+            border: 1px solid #3498db;
+              background-color: transparent;
+              height: 31px;
+              width: 120px;
+                font-size: 20px;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+              box-shadow: 0 6px 6px rgb(0 0 0 / 60%);
+              color: #01070a;
 }
 .btn:hover{
   background-color: red;
@@ -158,9 +176,12 @@ table {
 
     </div>
     <div id="viewmsg">
-      <button class="btn"  onclick="backpatient({{patientid}})">Back</button>
-      <button class="btn" onclick=logout() > Logout</button>
-        <button class="btn" onclick=backhm() > Home</button>
+      <button class="btn" onclick=backhmp({{patientid}}) name=home> HOME</button>
+        <button class="btn" onclick="msg({{patientid}})" name="chat">MESSAGE</button>
+        <button class="btn" onclick="feedback({{patientid}},email)">FEEDBACK</button>
+        <button id="btnqst" class="btn" onclick="qstn({{patientid}})">QUESTION</button>
+        <button id="btnlgot"class="btn" onclick=logout() name=logout> LOGOUT</button>
+        
     <div id="listName">
       {%for data in doctordatas %}
       <button id="msgdisplay"  onclick="loadmsg({{data.0}})">{{data.1}}</button>
@@ -173,7 +194,7 @@ table {
 <div id="msgbody" style="display: none;">
   <div id=querytable>
     <table id="patientmsgtable">
-      <thead>
+      <thead style="background-color: #8181e0;">
         <th>MESSAGE</th>
         <th>STATUS</th>
         
@@ -199,6 +220,8 @@ table {
 </div>
 </body>
 <script>
+  email='{{email}}'
+    doctorid='{{docid}}'
   var docid=-1;
   function loadmsg(doctorid){
     //console.log(doctorid)
@@ -224,16 +247,28 @@ table {
       
     
   }
-  function backhm(){
-    window.location.href='back'
+  function msg(id){
+    window.location.href='msgP?patientid='+id+'&doctorid='+doctorid;
+
+} 
+function backhmp(id){
+    id=id
+    window.location.href='backp?id='+id;
 }
 function logout(){
     window.location.href='patientlogout'
 }
-  function backpatient(patientid){
-    console.log(patientid)
-    window.location.href='backpatient?patientid='+patientid;
-  }
+
+function feedback(id,email){
+    patientid=id
+    email=email
+    window.location.href='patientfeedback?patientid='+patientid+'&email='+email;
+}
+function qstn(id){
+    console.log(id)
+    patientid=id
+    window.location.href='questionanswer?patientid='+patientid;
+}
   function sendMsg(patientid){
    //console.log(docid,patientid)
    patientid=patientid
