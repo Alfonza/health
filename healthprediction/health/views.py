@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from .models import doctors,patients,feedbacks,messages
 from django.db import connection
-
-
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import mysql.connector
+import json
+import re
 # Create your views here.
 
 def home(request):
@@ -22,6 +23,8 @@ def adm_login(request):
         return render(request,'admin.html',{"data":'username or password incorrect'})
     else: 
        return render(request,'adminH.html',{"data":'login successfull'})
+def backad(request):
+    return render(request,'adminH.html')
 def adminlogout(request):
     return render(request,'home.html')
 
@@ -70,7 +73,7 @@ def patient_data(request):
 def feedback(request):
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
-    cursor.execute('SELECT * FROM `health_feedbacks`')
+    cursor.execute("SELECT * FROM `health_feedbacks`")
     feedbacks=cursor.fetchall()
 
     #print(feedbacks)
@@ -103,12 +106,15 @@ def deleterowofD(request):
     cursor.close()
     return render(request,'adminH.html',{'doctors':doctors})
 def deleterowofF(request):
-    rowid=request.GET['rowid']
+    rowid=request.GET['id']
+    #email=request.GET['email']
+    #print(rowid,email)
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
+    #print("DELETE FROM `health_feedbacks` WHERE id="+rowid)
     cursor.execute("DELETE FROM `health_feedbacks` WHERE id="+rowid)
     connection.commit()
-    cursor.execute("SELECT * FROM `health_feedbacks`")
+    cursor.execute("SELECT feedbackmsg FROM `health_feedbacks`")
     feedbacks=cursor.fetchall()
     cursor.close()
     return render(request,'adminH.html',{'feedbacks':feedbacks})
@@ -155,7 +161,9 @@ def getdoctordata(request):
     doctordata=doctordata[0]
     print(doctordata)
     cursor.close()
-    return render(request,'doctor_data.html',{"doctordata":doctordata})
+    #return render(request,'doctor_data.html',{"doctordata":doctordata})
+    data=json.dumps(doctordata)
+    return HttpResponse(data)
 def getpatientdata(request):
     id=request.GET['patientid']
     print(id)
@@ -166,7 +174,9 @@ def getpatientdata(request):
     patientdata=patientdata[0]
     print(patientdata)
     cursor.close()
-    return render(request,'patient_data.html',{"patientdata":patientdata})
+    #return render(request,'patient_data.html',{"patientdata":patientdata})
+    data=json.dumps(patientdata)
+    return HttpResponse(data)
 def editdoctordata(request):
     id=request.GET['doctorid']
     name=request.GET['name']
@@ -174,6 +184,9 @@ def editdoctordata(request):
     phone=request.GET['phone']
     specialist=request.GET['specialist']
     email=request.GET['email']
+    #match = re.match(r'^\+?1?\d{10,11}$', phone)
+    #if match is None:
+    #    return render(request,'doctor_data.html',{"alert":'please add proper data'}) 
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
     cursor.execute("UPDATE `health_doctors` SET `name`='"+name+"',`email`='"+email+"',`password`='"+password+"',`phonenum`="+phone+",`specialization`='"+specialist+"' WHERE id="+id)
@@ -232,13 +245,14 @@ def validate(request):
     #print("SELECT * FROM `health_prediction_patient_data` WHERE name='"+username+"' and password='"+passw+"'")
     #validation=patients(username,password)
     #validation.
-    print(patient)
+    #print(patient)
     if len(patient)==0:
         return render(request,'patient.html',{"data":'username or password incorrect'})
     else:
         patient=patient[0]
         request.session['pemail']=patient[2]
-        print(patient[2])
+        #print(patient[2])
+        #score=0
         return render(request,'patient_profile1.html',{"patient":patient})
     #cursor.close()'''
     #return render(request,'patient_profile1.html')
@@ -246,10 +260,19 @@ def patientlogout(request):
     if request.session.has_key('pemail'):
         del request.session['pemail']
     return render(request,'patient.html')
-     
+def backp(request):
+    id=request.GET['id']
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
+    cursor=connection.cursor()
+    cursor.execute("SELECT * FROM `health_patients` WHERE id="+id)
+    patient=cursor.fetchall()
+    print(patient)
+    patient=patient[0]
+    return render(request,'patient_profile1.html',{"patient":patient})      
 def back(request):
     return render(request,'home.html') 
-
+def backlogin(request):
+    return render(request,'patient.html')
 def newAccount(request):
     patientName=request.POST['username']
     email=request.POST['email']
@@ -257,10 +280,19 @@ def newAccount(request):
     phone=request.POST['phone']
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
-    print("INSERT INTO `health_patients`(`name`, `email`, `password`,`phonenum`) VALUES ('"+patientName+"','"+email+"',"+password+","+phone+")")
-    cursor.execute("INSERT INTO `health_patients`(`name`, `email`, `password`, `phonenum`) VALUES ('"+patientName+"','"+email+"',"+password+","+phone+")")
-    connection.commit()
-    return render(request,'patient.html',{"data":'signup successfull'})
+    phonematch = re.match(r'^\+?1?\d{10}$', phone)
+    #emailmatch=re.match(r'^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$')
+    
+    if phonematch is None:
+        return render(request,'patient_signup.html',{"phonealert":'please add proper phone number'}) 
+    else:
+        connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
+        cursor=connection.cursor()
+
+        print("INSERT INTO `health_patients`(`name`, `email`, `password`,`phonenum`) VALUES ('"+patientName+"','"+email+"',"+password+","+phone+")")
+        cursor.execute("INSERT INTO `health_patients`(`name`, `email`, `password`, `phonenum`) VALUES ('"+patientName+"','"+email+"',"+password+","+phone+")")
+        connection.commit()
+        return render(request,'patient.html',{"data":'signup successfull'})
 def backpatient(request):
     patientid=request.GET['patientid']
     print(patientid)
@@ -274,18 +306,22 @@ def backpatient(request):
     print(patient)
     return render(request,'patient_profile1.html',{"patient":patient})
 def msgP(request):
-    doctorid=request.GET['doctorid']
+    #doctorid=request.GET['doctorid']
     patientid=request.GET['patientid']
+    #score=request.GET['score']
+    #print(score)
+    #print(doctorid,patientid)
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
     cursor.execute("SELECT `id`,`name` FROM `health_doctors`")
     doctordatas=cursor.fetchall() 
+    #print(doctordatas)
     cursor.execute("SELECT * FROM `health_messages` where patientid='"+patientid+"'")
     queries=cursor.fetchall() 
-    #print(doctordatas) 
+    #print(queries) 
     cursor.close()
     #print(queries)          
-    return render(request,'messageP.html',{"doctordatas":doctordatas,"patientid":patientid,'queries':queries,'docid':doctorid})
+    return render(request,'messageP.html',{"doctordatas":doctordatas,"patientid":patientid,'queries':queries})
 def sendmsgP(request):
     doctorid=request.GET['doctorid']
     patientid=request.GET['patientid']
@@ -297,10 +333,11 @@ def sendmsgP(request):
     connection.commit()
     cursor.execute("SELECT * FROM `health_messages` WHERE doctorid="+doctorid+" and patientid="+patientid)
     queries=cursor.fetchall()
-    #print(msgdata)
+    #print(queries)
     cursor.execute("SELECT `id`,`name` FROM `health_doctors`")
     doctordatas=cursor.fetchall() 
-    #print(msgdata)
+    
+    #print(doctorid)
     cursor.close()
     return render(request,'messageP.html',{"queries":queries,"doctordatas":doctordatas,'docid':doctorid})
 def updatepatient(request):
@@ -308,6 +345,7 @@ def updatepatient(request):
     name=request.GET['name']
     password=request.GET['password']
     phone=request.GET['phone']
+    #score=request.GET['score']
     print(email)
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
@@ -328,33 +366,58 @@ def questionanswer(request):
 def updatestatuspatient(request):
     status=request.GET['status']
     email=request.GET['email']
+    score=request.GET['score']
     print(status)
     print(email)
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
-    print("UPDATE 'health_patients' SET 'status'='"+status+"' WHERE `email`='"+email+"'")
-    cursor.execute("UPDATE `health_patients` SET `status`='"+status+"' WHERE email='"+email+"'")
+    #print("UPDATE `health_patients` SET `status`='"+status+"'`score`="+score+" WHERE email='"+email+"'")
+    cursor.execute("UPDATE `health_patients` SET `status`='"+status+"',`score`="+score+" WHERE email='"+email+"'")
     connection.commit()
     cursor.execute("SELECT * FROM `health_patients` WHERE `email`='"+email+"'")
     patient=cursor.fetchone()
     cursor.close()
     return render(request,'patient_profile1.html',{"patient":patient})
-def patientfeedback(request):
+def viewfb(request):
     patientid=request.GET['patientid']
-    return render(request,'feedbackP.html',{"patientid":patientid}) 
-def addfeedback(request):
-    email=request.GET['email']
-    feedback=request.GET['feedbackP']
-    print(feedback)
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
-    cursor.execute("INSERT INTO `health_feedbacks`( `feedbackmsg`) VALUES ('"+feedback+"')")
+    #cursor.execute("SELECT `name` FROM `health_patients` WHERE`id`="+patientid )
+    #name=cursor.fetchall()
+    #name=name[0][0]
+    #print(name)
+    cursor.execute("SELECT `id`,  `patientname`, `patientphone`, `patientemail`, `feedbackmsg` FROM `health_feedbacks` WHERE `patientid`="+patientid)
+    feedbackdata=cursor.fetchall()
+    #print(feedbackdata)
+    return render(request,'view.html',{"feedbackdata":feedbackdata,'patientid':patientid})
+def patientfeedback(request):
+    patientid=request.GET['patientid']
+    email=request.GET['email']
+    print(email)
+    return render(request,'feedbackP.html',{"patientid":patientid,'email':email}) 
+def addfeedback(request):
+    email=request.session['pemail']
+    feedback=request.GET['feedbackP']
+    print(email,feedback)
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
+    cursor=connection.cursor()
+    cursor.execute("SELECT `id` ,`name`,  `phonenum` FROM `health_patients` WHERE `email`='"+email+"'")
+    patientdata=cursor.fetchall()
+    #print(patientdata)
+    patientid=str(patientdata[0][0])
+    #print(type(patientid))
+    name=patientdata[0][1]
+    phone=patientdata[0][2]
+    #print(name,phone)
+    #print("INSERT INTO `health_feedbacks`(`patientid`, `patientname`, `patientphone`, `patientemail`, `feedbackmsg`) VALUES("+patientid+",'"+name+"',"+phone+",'"+email+"','"+feedback+"')")
+   
+    cursor.execute("INSERT INTO `health_feedbacks`(`patientid`, `patientname`, `patientphone`, `patientemail`, `feedbackmsg`) VALUES("+patientid+",'"+name+"',"+phone+",'"+email+"','"+feedback+"')")
     connection.commit()
-    cursor.execute("SELECT * FROM `health_patients` WHERE `email`='"+email+"'")
-    patient=cursor.fetchone()
-    cursor.close()
-
-    return render(request,'patient_profile1.html',{'patient':patient})
+    
+    #cursor.execute("SELECT * FROM `health_patients` WHERE `email`='"+email+"'")
+    #patient=cursor.fetchone()
+    return render(request,'feedbackP.html',{"patientid":patientid,'email':email}) 
+    #return render(request,'patient_profile1.html',{'patient':patient})
 
 
 
@@ -390,7 +453,16 @@ def doctorlogin(request):
         request.session['demail']=doctor[2]
         #print(doctor[2])
         return render(request,'doctor_profile.html',{"doctor":doctor})
-def backdoctor(request):
+def backd(request):
+    id=request.GET['doctorid']
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
+    cursor=connection.cursor()
+    cursor.execute("SELECT * FROM `health_doctors` WHERE id="+id)
+    doctor=cursor.fetchall()
+    print(doctor)
+    doctor=doctor[0]
+    return render(request,'doctor_profile.html',{"doctor":doctor})
+'''def backdoctor(request):
     doctorid=request.GET['doctorid']
     print(doctorid)
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
@@ -401,19 +473,34 @@ def backdoctor(request):
     for i in a[0]:
         doctor.append(i)
     print(doctor)
-    return render(request,'doctor_profile.html',{"doctor":doctor})
+    return render(request,'doctor_profile.html',{"doctor":doctor})'''
 def msgD(request):
     doctorid=request.GET['doctorid']
     #print(doctorid)
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
-    cursor.execute("SELECT `id`,`message`,`replay` FROM `health_messages` WHERE doctorid="+doctorid+" AND replay IS Null")
+    cursor.execute("SELECT  `id`,`patientid`,`message`,`replay` FROM `health_messages` WHERE doctorid="+doctorid)
     #cursor.execute("SELECT `id`,`name` FROM `health_patients`")
     messagedata=cursor.fetchall() 
-    
-    #print(messagedata)   
+    namesid=[]
+    for ids in messagedata:
+        namesid.append(ids[1])
+    name=[]
+    for pname in namesid:
+        pname=str(pname)
+        cursor.execute("SELECT `name` FROM `health_patients` WHERE id="+pname)
+        nameval=cursor.fetchone()
+        nameval=nameval[0]
+        name.append(nameval)
+    messagedataL=[]
+    for data in messagedata:
+        messagedataL.append(list(data))
+    print(messagedataL)
+    for i in range(len(name)):
+        messagedataL[i].append(name[i])
+    print(messagedataL)   
     cursor.close()            
-    return render(request,'messageD.html',{"messagedata":messagedata,"doctorid":doctorid})
+    return render(request,'messageD.html',{"messagedata":messagedataL,"doctorid":doctorid})
 def rplymsg(request):
     msg=request.GET['msg']
     messageid=request.GET['messageid']
@@ -421,13 +508,32 @@ def rplymsg(request):
     #print(doctorid,messageid,msg)
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
+    print("UPDATE `health_messages` SET `replay`='"+msg+"' WHERE id="+messageid)
     cursor.execute("UPDATE `health_messages` SET `replay`='"+msg+"' WHERE id="+messageid)
     connection.commit()
-    cursor.execute("SELECT `id`,`message`,`replay` FROM `health_messages` WHERE doctorid="+doctorid+" AND replay IS Null")
+    #print("SELECT `id`,`message`,`replay` FROM `health_messages` WHERE doctorid="+doctorid)
+    cursor.execute("SELECT `id`, `patientid`,`message`,`replay` FROM `health_messages` WHERE doctorid="+doctorid)
+    #cursor.execute("SELECT `id`,`name` FROM `health_patients`")
     messagedata=cursor.fetchall() 
-    print(messagedata)   
+    namesid=[]
+    for ids in messagedata:
+        namesid.append(ids[1])
+    name=[]
+    for pname in namesid:
+        pname=str(pname)
+        cursor.execute("SELECT `name` FROM `health_patients` WHERE id="+pname)
+        nameval=cursor.fetchone()
+        nameval=nameval[0]
+        name.append(nameval)
+    messagedataL=[]
+    for data in messagedata:
+        messagedataL.append(list(data))
+    print(messagedataL)
+    for i in range(len(name)):
+        messagedataL[i].append(name[i])
+    #print(messagedataL)   
     cursor.close()            
-    return render(request,'messageD.html',{"messagedata":messagedata})
+    return render(request,'messageD.html',{"messagedata":messagedataL,"doctorid":doctorid})
 def displaymsg(request):
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
     cursor=connection.cursor()
@@ -449,6 +555,15 @@ def updatedoctordata(request):
     #print(user)
     cursor.close()
     return render(request,'doctor_profile.html',{"doctor":doctor})
+def viewpatientdata(request):
+    doctorid=request.GET['doctorid']
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='healthprediction')
+    cursor=connection.cursor() 
+    cursor.execute("SELECT `id`, `name`, `email`,  `phonenum`, `status`, `score` FROM `health_patients`")
+    patientdata=cursor.fetchall()
+    #print(patientdata)
+    cursor.close()
+    return render(request,'viewpatientdata.html',{"patientdata":patientdata,'doctorid':doctorid})
 
 def doctorlogout(request):
     if request.session.has_key('demail'):

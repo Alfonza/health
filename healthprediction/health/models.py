@@ -7,8 +7,8 @@ class doctors(models.Model):
     name=models.CharField(max_length=50)
     email=models.CharField(max_length=50)
     password=models.CharField(max_length=50)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-    phonenum= models.CharField(validators=[phone_regex], max_length=17, blank=True)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{10,11}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    phonenum= models.CharField(validators=[phone_regex] ,max_length=10, blank=True)
     specialization=models.CharField(max_length=50)
 
 
@@ -17,10 +17,13 @@ class patients(models.Model):
     email=models.CharField(max_length=50)
     password=models.CharField(max_length=50)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-    phonenum= models.CharField(validators=[phone_regex], max_length=17, blank=True)
+    phonenum= models.CharField(validators=[phone_regex], max_length=10, blank=True)
     status=models.CharField(max_length=100, blank=True,null=True) 
 
 class feedbacks(models.Model):
+    patientname=models.CharField(max_length=50)
+    patientnumber=models.CharField(max_length=20)
+    patientemail=models.CharField(max_length=50)
     feedbackmsg=models.CharField(max_length=200)
 
 class messages(models.Model):

@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <style>
-        
-        body{
-            background-color:#f5f8f6;
-            
-        }
+       body{
+        background-image: linear-gradient( #ADEFD1FF,#00203FFF,#00539CFF) ;
+       }
         #question{
     
             position: relative;
@@ -15,7 +13,7 @@
             top: 20px;
             width: 500px;
             left: 450px;
-            height: 600px;
+            height: 950px;
             box-shadow: 10px 10px 5px grey;
             
         }
@@ -38,13 +36,13 @@
         }
         .but{
             position: relative;
-            left: 1070px;
+            right: -700px;
     top: -8px;
             cursor: pointer;
               border: 1px solid #eaeef1;
               background-color: transparent;
               height: 31px;
-                width: 91px;
+              width: 120px;
                 font-size: 20px;
                 font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
               box-shadow: 0 6px 6px rgb(0 0 0 / 60%);
@@ -65,30 +63,120 @@
             height: 30px;
             width: 400px;
         }
+        select,option{
+            text-align: center;
+            height: 40px;
+            width: 60px;
+        }
+        
     </style>
 
 <body>
-    <button class="but" onclick="backpatient({{patientid}})">Back</button>
-    <button class="but"onclick=logout() > Logout</button>
-    <button class="but"onclick=backhm() > Home</button>
-    <div id="question">
-        <br>
-            <input id="q1" placeholder="Do you have temparature?"><br><br>
-            <input id="q2" placeholder="Do you suffer headache?"><br><br>
-            <input id="q3" placeholder="Do you have cold?"><br><br>
-            <input id="q4" placeholder="Do you suffer any weaknes in body?"><br><br>
-            <input id="q5" placeholder="Do u suffer sour throught?"><br><br>
-            <input id="q6" placeholder="Do you suffer any difficulty breathing?"><br><br>
-            <input id="q7" placeholder="do you suffer this symptom for more than 10 days?"><br><br>
-            <input id="q8" placeholder="Do you suffer pain in any body part?"><br><br>
-            <input id="q9" placeholder="Do you suffer irregular sleep?"><br><br>
-            <input id="q10" placeholder="Any medicine did you take before?"><br><br>
-            <button onclick="questions()">Submit</button>
+    <button class="but" onclick=backhmp({{patientid}}) name=home> HOME</button>
+        <button class="but" onclick="msg({{patientid}})" name="chat">MESSAGE</button>
+        <button class="but" onclick="feedback({{patientid}},email)">FEEDBACK</button>
+        <button class="but" onclick="qstn({{patientid}})">QUESTION</button>
+        <button class="but" onclick=logout() name=logout> LOGOUT</button>
 
+   
+    
+    <div id="question">
+        
+        <br>
+        
+        <label for="qstns1" style="color: black;">Do you have temparature?</label><br><br>
+
+             <select name="qstns1" id="q1">
+                <option value=""></option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+  
+            </select><br><br>
+
+            <label for="qstns2" style="color: black;">Do you suffer headache?</label><br><br>
+
+             <select name="qstns2" id="q2">
+                <option value=""></option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+  
+            </select><br><br>
+            <label for="qstns3" style="color: black;">Do you have cold?</label><br><br>
+
+             <select name="qstns3" id="q3">
+                <option value=""></option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+  
+            </select><br><br>
+            <label for="qstns4" style="color: black;">Do you suffer any weaknes in body?</label><br><br>
+
+             <select name="qstns4" id="q4">
+                <option value=""></option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+  
+            </select><br><br><br>
+            
+            <label for="qstns5" style="color: black;">Do u suffer sour throught?</label><br><br>
+
+             <select name="qstns5" id="q5">
+                <option value=""></option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+  
+            </select><br><br>
+            <label for="qstns6" style="color: black;">Do you suffer any difficulty breathing?</label><br><br>
+
+             <select name="qstns6" id="q6">
+                <option value=""></option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+  
+            </select><br><br>
+            
+            <label for="qstns7" style="color: black;">Do you suffer this symptom for more than 10 days?</label><br><br>
+
+            <select name="qstns7" id="q7">
+                <option value=""></option>
+                <option value="yes">yes</option>
+                <option value="no">no</option>
+ 
+           </select><br><br>
+    
+           <label for="qstns8" style="color: black;">Do you suffer pain in any body part?</label><br><br>
+
+           <select name="qstns8" id="q8">
+            <option value=""></option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+
+          </select><br><br>
+          <label for="qstns9" style="color: black;">Do you suffer irregular sleep?</label><br><br>
+
+           <select name="qstns9" id="q9">
+            <option value=""></option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+
+          </select><br><br>
+          
+          <label for="qstn10" style="color: black;">Any medicine did you take before?</label><br><br>
+
+           <select name="qstns10" id="q10">
+            <option value=""></option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+
+          </select><br><br>
+          
+          <button onclick="questions()">Submit</button>>
+       
     </div>
 </body>
 <script>
     email='{{email}}'
+    doctorid='{{docid}}'
     function backpatient(patientid){
         console.log(patientid)
         window.location.href='backpatient?patientid='+patientid;
@@ -135,14 +223,30 @@
             status='Take rest'
         }
         
-        window.location.href='updatestatuspatient?status='+status+'&email='+email;
+        window.location.href='updatestatuspatient?status='+status+'&email='+email+'&score='+marks;
 
     }
-    function backhm(){
-        window.location.href='back'
+    function msg(id){
+        window.location.href='msgP?patientid='+id+'&doctorid='+doctorid;
+    
+    } 
+    function backhmp(id){
+        id=id
+        window.location.href='backp?id='+id;
     }
     function logout(){
         window.location.href='patientlogout'
+    }
+    
+    function feedback(id,email){
+        patientid=id
+        email=email
+        window.location.href='patientfeedback?patientid='+patientid+'&email='+email;
+    }
+    function qstn(id){
+        console.log(id)
+        patientid=id
+        window.location.href='questionanswer?patientid='+patientid;
     }
 </script>
 </html>

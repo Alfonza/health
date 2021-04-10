@@ -2,12 +2,15 @@
 <!DOCTYPE html>
 <html>
     <style>
+        body{
+            background-color: black;
+        }
         #main{
             position: relative;
                 
             text-align: center;
            
-            height: 150px;
+            height: 157px;
             width: 100%;
             background-position: center;
             background-repeat: no-repeat;
@@ -20,7 +23,7 @@
                 background-color: rgb(237 245 249);
                 width: 369px;
                 left: 762px;
-                height: 500px;
+                height: 550px;
                 box-shadow: 10px 10px 5px grey;
         }
         button{
@@ -66,6 +69,7 @@
         <img src="{% static 'img/7616ce55552d7a8548c7ed5b53aae6f0.jpg' %}" alt="My image2"> 
      
         <div id="patientSignupPage">
+            
         <form  action="newAccount" method = "post" enctype="multipart/form-data"><div id="hed"><h3> <br> SIGNUP YOUR ACCOUNT </h3></div>
             {% csrf_token %}
             {{ form.as_p }}
@@ -74,9 +78,11 @@
                 <input name='username' id='username' type='text'placeholder='username' required><br><br><br>
                 <input name='password' id='password' type='password' placeholder='password' required><br><br><br>
                 <input name='email' id='email' type='email' placeholder='email' required><br><br><br>
+                {{emailalert}}
                 <input name='phone' id='phone' type='tel'  placeholder='phone' required><br><br>
-                
-                <button  type="submit" id='signup'>SIGN UP</button>
+                {{phonealert}}
+                <button  type="submit" id='signup'>SIGN UP</button><br><br>
+                <button onclick="backlogin()">Back</button>
                 
             </div>
         </form>
@@ -90,7 +96,9 @@
         
     </body>
     <script>
-       
+       function backlogin(){
+        window.location.href='backlogin'
+       }
     </script>
     
 </html>

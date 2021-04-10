@@ -69,8 +69,8 @@
         }
         .but{
             position: relative;
-            left: 900px;
-            top: -150px;
+            right: -900px;
+            top: -148px;
             cursor: pointer;
               border: 1px solid #3498db;
               background-color: transparent;
@@ -111,9 +111,12 @@
         <div id="main">
             <img src="{% static 'img/canadian-specialist-hospital_52d7a0cc13bd9.jpg' %}" alt="My image2"> 
         </div>
+        
+        <button class="but" onclick="backhmd({{doctor.0}})" name=home> HOME</button>
+        <button class="but" onclick="viewpatientdata({{doctor.0}})" name=home> VIEW</button>
         <button  class="but" onclick="msg({{doctor.0}})" name="chat">MESSAGE</button>&nbsp;&nbsp;
         <button class="but" onclick="logout()" name=logout> LOGOUT</button>&nbsp;&nbsp;
-        <button class="but" onclick="backhm()" name=home> HOME</button>
+        
         <div id="div1">
             
            
@@ -142,12 +145,18 @@
                 window.location.href='updatedoctordata?name='+doctorname+'&phone='+phone+'&password='+password+'&specialist='+specialist;
 
             }
+            function viewpatientdata(id){
+                
+                window.location.href='viewpatientdata?doctorid='+id;
+
+            }
             function msg(doctorid){
                 window.location.href='msgD?doctorid='+doctorid;
             
             }
-            function backhm(){
-                window.location.href='back'
+            function backhmd(id){
+                id=id
+                window.location.href='backd?doctorid='+id;
             }
             function logout(){
                 window.location.href='doctorlogout'

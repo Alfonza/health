@@ -29,11 +29,29 @@
     }
     #addDoctor{
       z-index: 1050;
-      background-color: white;
-      height: 300px;
-      width: 200px;
-      border: black solid;
+     
+      top: -326px;
+      background-color:white;
+      position: relative;
+      height: 400px;
+      width: 700px;
+      
       text-align: center;
+      box-shadow: 10px 10px 5px grey;
+    }
+    .closebtn {
+      margin-left: 15px;
+      color: rgb(26, 24, 24);
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .closebtn:hover {
+      color: rgb(204, 63, 63);
     }
     #addPatient{
       z-index: 1050;
@@ -43,6 +61,18 @@
       border: black solid;
       text-align: center;
     }
+    input{
+      text-align: center;
+      border: 0;
+      outline: 0;
+      border-bottom: 2px solid rgb(17, 17, 17);
+      width: 400px;
+      height: 40px;
+    }
+    input:hover{
+      border-bottom: 2px solid rgb(55, 57, 226);
+    }
+    
     
 </style>
     <body>
@@ -59,7 +89,7 @@
               </div>
               <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                  <li class="active"><a href="back">Home</a></li>
+                  <li class="active"><a href="backad">Home</a></li>
                   
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -115,22 +145,22 @@
             </div>
             <div class="modal-body">
               <div class="form-group">
-                <input class="form-control " id="editnameD" type="text" placeholder="Name" value="{{doctordata.0}}">
+                <input class="form-control " id="editnameD" type="text"  value="{{doctordata.0}}" required>
               </div>
               <div class="form-group">
           
-                <input class="form-control " id="editemailD" type="text" placeholder="email"value="{{doctordata.1}}">
+                <input class="form-control " id="editemailD" type='email' value="{{doctordata.1}}" required>
               </div>
               <div class="form-group">
-                <input class="form-control " id="editpasswordD" type="text" placeholder="password"value="{{doctordata.2}}">
+                <input class="form-control " id="editpasswordD" type="text" value="{{doctordata.2}}" required>
           
                </div>
               <div class="form-group">
-                <input class="form-control " id="editphonenumD" type="text" placeholder="phonenumber"value="{{doctordata.3}}">
+                <input class="form-control " id="editphonenumD" type="text" value="{{doctordata.3}}" required>
           
               </div>
               <div class="form-group">
-                <input class="form-control " id="editspecializationD" type="text" placeholder="specialization"value="{{doctordata.4}}">
+                <input class="form-control " id="editspecializationD" type="text" value="{{doctordata.4}}" required>
           
               </div>
 
@@ -156,22 +186,22 @@
               </div>
               <div class="modal-body">
                 <div class="form-group">
-                  <input class="form-control " id="editnameP" type="text" placeholder="Name" value="{{patientdata.0}}">
+                  <input class="form-control " id="editnameP" type="text"  value="{{patientdata.0}}" required>
                 </div>
                 <div class="form-group">
             
-                  <input class="form-control " id="editemailP" type="text" placeholder="email"value="{{patientdata.1}}">
+                  <input class="form-control " id="editemailP" type="text" value="{{patientdata.1}}"required>
                 </div>
                 <div class="form-group">
-                  <input class="form-control " id="editpasswordP" type="text" placeholder="password"value="{{patientdata.2}}">
+                  <input class="form-control " id="editpasswordP" type="text" value="{{patientdata.2}}"required>
             
                  </div>
                 <div class="form-group">
-                  <input class="form-control " id="editphonenumP" type="text" placeholder="phonenumber"value="{{patientdata.3}}">
+                  <input class="form-control " id="editphonenumP" type="text" value="{{patientdata.3}}"required>
             
                 </div>
                 <div class="form-group">
-                  <input class="form-control " id="editstatusP" type="text" placeholder="status"value="{{patientdata.4}}">
+                  <input class="form-control " id="editstatusP" type="text" value="{{patientdata.4}}">
             
                 </div>
   
@@ -214,8 +244,12 @@ function load(page)
 }
 load('doctordata')
 function add_new(id){
+   
+    var popup = document.getElementById(id);
+    popup.classList.toggle("show");
+ 
 
-  document.getElementById(id).style.display='block'
+  
 } 
 
 
@@ -234,7 +268,8 @@ function deleterowD(id){
 }
 function deleterowF(id){
  // window.location.href='deleterowofF?rowid='+id; 
-  $.get('deleterowofF?rowid='+id, function(data){
+ 
+  $.get('deleterowofF?id='+id, function(data){
     load('feedback')
   });
 }
@@ -245,8 +280,26 @@ function editdoctordata(doctorid){
   email=document.getElementById('editemailD').value 
   phonenum=document.getElementById('editphonenumD').value 
   password=document.getElementById('editpasswordD').value 
-  specialist=document.getElementById('editstatusD').value 
+  specialist=document.getElementById('editspecializationD').value 
   console.log(doctorname,email,phonenum,password,specialist)
+  var res = '^\\+?1?\\d{10}$';
+  var mail= '^\\s*[\\w\\-\\+_]+(\\.[\\w\\-\\+_]+)*\\@[\\w\\-\\+_]+\\.[\\w\\-\\+_]+(\\.[\\w\\-\\+_]+)*\\s*$';
+   var val=email.match(mail)
+  console.log(mail)
+  if((email.match(mail)==null)){
+    console.log(val)
+    window.alert("please enter valid emailid");
+  }
+  else  if((phonenum.match(res)==null))
+        {
+          //console.log(val)
+          window.alert("please enter valid phonenumber");
+          
+           
+        }
+  
+  
+  else{
   //window.location.href='editdoctordata?doctorid='+doctorid+'&name='+doctorname+'&phone='+phonenum+'&password='+password+'&specialist='+specialist;
   $.get('editdoctordata?doctorid='+doctorid+'&name='+doctorname+'&email='+email+'&phone='+phonenum+'&password='+password+'&specialist='+specialist,function(data){
      load('doctordata')
@@ -255,12 +308,14 @@ function editdoctordata(doctorid){
      for( var i = 0 ; i <cls.length; i++){
          console.log(cls[i])
          cls[i].style.display='none';
+         
    
  } 
+ $('.modal-backdrop').remove();
  //document.getElementById('editD').style.display='none'
   });
   
-   
+} 
   
 }
 function editpatientdata(patientid){
@@ -271,29 +326,58 @@ function editpatientdata(patientid){
   phonenum=document.getElementById('editphonenumP').value 
   password=document.getElementById('editpasswordP').value 
   status=document.getElementById('editstatusP').value 
-  console.log(patientname,email,phonenum,password,status)
+  var res = '^\\+?1?\\d{10}$';
+  var mail= '^\\s*[\\w\\-\\+_]+(\\.[\\w\\-\\+_]+)*\\@[\\w\\-\\+_]+\\.[\\w\\-\\+_]+(\\.[\\w\\-\\+_]+)*\\s*$'; 
+  var val=phonenum.match(res)
+  console.log(res)
+  if((email.match(mail)==null)){
+    window.alert("please enter valid emailid");
+  }
+  else if((phonenum.match(res)==null))
+        {
+          //console.log(val)
+          window.alert("please enter valid phonenumber");
+          
+           
+        }
+       
+      else
+        {
+          $.get('editpatientdata?patientid='+patientid+'&name='+patientname+'&email='+email+'&phone='+phonenum+'&password='+password+'&status='+status,function(data){
+            load('patientdata')
+           cls=document.getElementsByClassName('modal fade')
+            console.log(cls)
+            for( var i = 0 ; i <cls.length; i++){
+                console.log(cls[i])
+                cls[i].style.display='none';
+                
+          
+        } 
+        $('.modal-backdrop').remove();
+        //document.getElementById('editD').style.display='none'
+         });
+          
+       
+        }
+  //console.log(patientname,email,phonenum,password,status)
   //window.location.href='editdoctordata?doctorid='+doctorid+'&name='+doctorname+'&phone='+phonenum+'&password='+password+'&specialist='+specialist;
-  $.get('editpatientdata?patientid='+patientid+'&name='+patientname+'&email='+email+'&phone='+phonenum+'&password='+password+'&status='+status,function(data){
-    load('patientdata')
-     //document.getElementById('editP').style.display='none'
-     cls=document.getElementsByClassName('modal fade')
-     console.log(cls)
-     for( var i = 0 ; i <cls.length; i++){
-         console.log(cls[i])
-         cls[i].style.display='none';
-   
- } 
-  });
   
-   
   
 }
 function editpagedispalyD(doctorid){
   editpagedispalyD.doctorid=doctorid
   console.log(doctorid)
+  console.log('{{doctors}}')
+
   //window.location.href='getdoctordata?doctorid='+doctorid;
  $.get('getdoctordata?doctorid='+doctorid,function(data){
     document.getElementById('editD').style.display='block'
+    var data = JSON.parse(data);
+    document.getElementById('editnameD').value = data[0]
+  document.getElementById('editemailD').value  = data[1]
+  document.getElementById('editpasswordD').value  = data[2]
+  document.getElementById('editphonenumD').value  = data[3]
+  document.getElementById('editspecializationD').value  = data[4]
       
   });
 
@@ -303,7 +387,12 @@ function editpagedispalyP(patientid){
   console.log(patientid)
   $.get('getpatientdata?patientid='+patientid,function(data){
       document.getElementById('editP').style.display='block'
-      
+      var data = JSON.parse(data);
+    document.getElementById('editnameP').value = data[0]
+  document.getElementById('editemailP').value  = data[1]
+  document.getElementById('editpasswordP').value  = data[2]
+  document.getElementById('editphonenumP').value  = data[3]
+  document.getElementById('editstatusP').value  = data[4]
   });
 
 }

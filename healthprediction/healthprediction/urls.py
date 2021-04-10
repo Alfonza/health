@@ -16,7 +16,9 @@ Including another URLconf
 from django.urls import path,include
 from health import views 
 urlpatterns = [
+    
     path('',views.home,name='home'),
+    path('welcome',views.home,name='home'),
     path('admin/',views.admin,name='admin'),
     path('adm_login',views.adm_login,name='adm_login'),
     path('add',views.add,name='add'),
@@ -38,12 +40,16 @@ urlpatterns = [
     path('doctor',views.doctor,name='doctor'),
     path('login',views.validate,name='validate'),
     path('back',views.back,name='back'),
+    path('backp',views.backp,name='backp'),
+    path('backd',views.backd,name='backd'),
+    path('backad',views.backad,name='backad'),
+    path('backlogin',views.backlogin,name='backlogin'),
     path('user_signup',views.user_signup,name='user_signup'),
     path('newAccount',views.newAccount,name='newAccount'),
     path('backpatient',views.backpatient,name='backpatient'),
     path('msgP',views.msgP,name='msgP'),
     path('sendmsgP',views.sendmsgP,name='sendmsgP'),
-    path('backdoctor',views.backdoctor,name='backdoctor'),
+    path('viewpatientdata',views.viewpatientdata,name='viewpatientdata'),
     path('msgD',views.msgD,name='msgD'),
     path('rplymsg',views.rplymsg,name='rplymsg'),
     path('doctorlogin',views.doctorlogin,name='doctorlogin'),
@@ -58,6 +64,7 @@ urlpatterns = [
     path('patientfeedback',views.patientfeedback,name='patientfeedback'),
     path('addfeedback',views.addfeedback,name='addfeedback'),
     path('questionanswer',views.questionanswer,name='questionanswer'),
+    path('viewfb',views.viewfb,name='viewfb')
     
    
 ]

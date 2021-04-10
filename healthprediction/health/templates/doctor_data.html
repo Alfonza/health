@@ -1,4 +1,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    
+    
+</style>
 <table id="doctortable" class="hiddediv table table-bordred table-striped">
                        
     <thead>
@@ -32,17 +36,26 @@
 
       </tbody>
    </table>
+   <div class="hiddediv" id="addDoctor" style="display: none;">
+    <span class="closebtn" onclick=closediv()>&times;</span> 
+     <br>
+        &nbsp;&nbsp;<input name="addnameD" id="addnameD" type="text" required placeholder="name" required><br><br>
+        <input name="addpassworD" id="addpasswodrdD" placeholder="password" required><br><br>
+        <input name="addemailD" id="addemailD" type='email' required placeholder="email" required><br><br>
+        <input name="addphoneD" id="addphoneD" type="number" placeholder="phonenumber"required><br><br>
+        <input name="addspecialistD"  id="addspecialistD" type="text" placeholder="specialist" required><br><br>
+        <button id="ajaxBtnD">add</button>
+  </div>
    
-  <div class="hiddediv" id="addDoctor" style="display: none;">
+  
     
-    Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="addnameD" id="addnameD" required><br>
-    Password &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="addpassworD" id="addpasswodrdD" required><br>
-    Email  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="addemailD" id="addemailD" required><br>
-    Phonenumber &nbsp;<input name="addphoneD" id="addphoneD" required><br>
-    Specialist &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="addspecialistD"  id="addspecialistD" required><br>
-    <button id="ajaxBtnD">add</button>
+    
     
 <script>
+  function closediv(){
+    load('doctordata')
+  }
+  
     $('#ajaxBtnD').click(function(){
         console.log('ues')
 
@@ -57,22 +70,44 @@
         //console.log('ues')
         specialist=document.getElementById('addspecialistD').value
         //console.log(name,password,email,phone,specialist);
+        var res = '^\\+?1?\\d{10}$';
+        var mail= '^\\s*[\\w\\-\\+_]+(\\.[\\w\\-\\+_]+)*\\@[\\w\\-\\+_]+\\.[\\w\\-\\+_]+(\\.[\\w\\-\\+_]+)*\\s*$'; 
+        var letters = '^[A-Za-z]+$';
+        //var val=phone.match(res)
+        //console.log(mail)
+        if((email.match(mail)==null))
+        {
+          console.log('email')
+          window.alert("ienter valid  emailid  ");
+        }
+        else if((phone.match(res)==null))
+              {
+                console.log('phone')
+                window.alert("enter valid phonenumber  ");
+                
+                 
+              }
+        else if(specialist.match(letters)==null){
+          window.alert("enter valid specialization")
 
-        $.post("adddoctordata",
-    {
-      "name": name,
-       "password":password,
-       "email":email,
-       "phone":phone,
-       "specialist":specialist
-    },
-    function(data,status){
+        }
+        else{
+
+           $.post("adddoctordata",
+           {
+                "name": name,
+                "password":password,
+                 "email":email,
+                 "phone":phone,
+                 "specialist":specialist
+           },
+           function(data,status){
         //console.log('u')
-       $('#table-responsive').load('doctordata',data)
-    });
-    
-});
-
+             $('#table-responsive').load('doctordata',data)
+         });
+        }
+          });
+        
 
 </script>
 

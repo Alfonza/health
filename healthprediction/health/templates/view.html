@@ -107,6 +107,7 @@ table {
 table, td, th {
   border: 1px solid black;
   height: 44px;
+  width: 719px;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   text-align: center;
 }
@@ -120,10 +121,10 @@ tr:nth-child(even) {background-color:#f7cac9;}
     left: 301px;
     position: relative;
 }
-#sendMsg{
+#querytable{
     position: relative;
+    left: 200px;
     
-    left: 2px;
 }
 .container{
   position: relative;
@@ -182,41 +183,36 @@ tr:nth-child(even) {background-color:#f7cac9;}
         <button id="btnqst" class="btn" onclick="qstn({{patientid}})">QUESTION</button>
         <button id="btnlgot"class="btn" onclick=logout() name=logout> LOGOUT</button>
         
-    <div id="listName">
-      {%for data in doctordatas %}
-      <button id="msgdisplay"  onclick="loadmsg({{data.0}})">{{data.1}}</button>
    
-      <hr>
-      {%endfor %}
-      
-</div>
 
-<div id="msgbody" style="display: none;">
+
   <div id=querytable>
-    <table id="patientmsgtable">
-      <thead style="background-color: #8181e0;">
-        <th>MESSAGE</th>
-        <th>STATUS</th>
-        
-      </thead>
-      <tbody id='tbody'>
-        {% for q in queries %}
-        <tr class="queries  D{{q.1}}" style="display: none;">
-          <td>{{q.3}}</td>
-          <td>{{q.4}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <table id="feedbacktable" class="hiddediv table table-bordred table-striped">
+                     
+        <thead style="background-color: #8181e0;">
+          <th>Id</th>
+          
+          <th> Name</th>
+           
+           <th>PhoneNumber</th>
+           <th>Email</th>
+           <th>Feedback</th>
+            
+             
+         </thead>
+         <tbody>
+             {% for feedback in feedbackdata %}
+             <tr>
+                 {% for fb in feedback %}
+                 <td>{{fb}}</td>
+                 {% endfor%}
+             </tr>
+             {% endfor %}
+        </tbody>
+        </table>
   </div>  
 
-<div class="container">
-  
-<div id="sendMsg">
-<input id="typemsg" type="text" placeholder="type here.....">
-<button onclick="sendMsg({{patientid}})"id="butmsgsend">SEND</button>
-</div>
-</div>
+
 </div>
 </body>
 <script>
@@ -224,32 +220,9 @@ tr:nth-child(even) {background-color:#f7cac9;}
     //doctorid='{{docid}}'
     patientid='{{patientid}}'
   //var docid=-1;
-  function loadmsg(doctorid){
-    //console.log(doctorid)
-    data=document.getElementsByClassName('queries')
-    //console.log(docid)
-    for( var i = 0 ; i <data.length; i++){
-      //console.log(data[i])
-      data[i].style.display='none';
-
-
-    }
-    document.getElementById('msgbody').style.display='block';
-    docid=doctorid;
-    //console.log(document.getElementsByClassName('D'+docid))
-    data=document.getElementsByClassName('D'+docid)
-    console.log(data)
-    for( var i = 0 ; i <data.length; i++){
-      //console.log(data[i])
-      data[i].style.display='table-row';
-
-
-    }
-      
-    
-  }
+  
   function msg(id){
-    window.location.href='msgP?patientid='+id+'&doctorid='+doctorid;
+    window.location.href='msgP?patientid='+id;
 
 } 
 function backhmp(id){
@@ -300,4 +273,17 @@ function qstn(id){
   }
   
 </script>
+</html>
+
+
+
+
+
+
+
+
+<html>
+    <body>
+       
+    </body>
 </html>

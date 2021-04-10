@@ -9,7 +9,7 @@
                 
             text-align: center;
            
-            height: 150px;
+            height: 160px;
             width: 100%;
             background-position: center;
             background-repeat: no-repeat;
@@ -63,8 +63,8 @@
         }
         .but{
             position: relative;
-            left: 800px;
-            top: -150px;
+            right: -799px;
+            top: -148px;
             cursor: pointer;
               border: 1px solid #3498db;
               background-color: transparent;
@@ -112,11 +112,11 @@
         <div id="main">
             <img src="{% static 'img/canadian-specialist-hospital_52d7a0cc13bd9.jpg' %}" alt="My image2"> 
         </div>
+        <button class="but" onclick=backhmp({{patient.0}}) name=home> HOME</button>
         <button class="but" onclick="msg({{patient.0}})" name="chat">MESSAGE</button>
-        <button class="but" onclick=logout() name=logout> LOGOUT</button>
-        <button class="but" onclick=backhm() name=home> HOME</button>
-        <button class="but" onclick="feedback({{patient.0}})">FEEDBACK</button>
+        <button class="but" onclick="feedback({{patient.0}},email)">FEEDBACK</button>
         <button class="but" onclick="qstn({{patient.0}})">QUESTION</button>
+        <button class="but" onclick=logout() name=logout> LOGOUT</button>
         <hr>
         <div id="div1">
             
@@ -133,13 +133,14 @@
         
             <h5>Password : </h5><input name='password' id='password' value='{{patient.3}}' >
             
-        <h5>Status :</h5>{{patient.5}}
+        <h5>Status :</h5>{{patient.5}} &nbsp;&nbsp; {{patient.6}}%
         <br><br><br>
         <button id='update' onclick="send_update()" name="update" type="submit">UPDATE</button>
         <br><br><br>
         
        
         <script>
+        //score='{{score}}'
            email='{{patient.2}}'
            doctorid=0
             
@@ -153,16 +154,18 @@
                 window.location.href='msgP?patientid='+id+'&doctorid='+doctorid;
             
             } 
-            function backhm(){
-                window.location.href='back'
+            function backhmp(id){
+                id=id
+                window.location.href='backp?id='+id;
             }
             function logout(){
                 window.location.href='patientlogout'
             }
             
-            function feedback(id){
+            function feedback(id,email){
                 patientid=id
-                window.location.href='patientfeedback?patientid='+patientid;
+                email=email
+                window.location.href='patientfeedback?patientid='+patientid+'&email='+email;
             }
             function qstn(id){
                 console.log(id)

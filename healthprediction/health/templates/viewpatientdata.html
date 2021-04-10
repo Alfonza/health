@@ -132,10 +132,10 @@ img{
 
 }
 #msgbody{
-    top: -460px;
+    top: 0px;
     height: 615px;
     width: 193%;
-    left: 301px;
+    left: 220px;
     position: relative;
 }
 #sendMsg{
@@ -183,51 +183,37 @@ button{
     </div>
     <div id="viewmsg">
       <button class="btn" onclick="backhmd({{doctorid}})" name=home> HOME</button>
-      <button class="btn" onclick="viewpatientdata({{doctorid}})" name=home> VIEW</button>
+      <button class="btn" onclick="viewpatientdata({{doctorid}})" name=view> VIEW</button>
         <button  class="btn" onclick="msg({{doctorid}})" name="chat">MESSAGE</button>&nbsp;&nbsp;
-        <button class="btn"id="logout"  onclick="logout()" name=logout> LOGOUT</button>&nbsp;&nbsp;
+        <button class="btn" id="logout" onclick="logout()" name=logout> LOGOUT</button>&nbsp;&nbsp;
      
-    <div id="listName">
-     
-    {% for name in patientname%}
-    <button id="msgdisplay" onclick="displaymsg({{name.0}})" >{{name.1}}</button>
-    <hr>
-    {% endfor %}
-    
-</div>
+  
 
 <div id="msgbody" >
   <div id=querytable>
     <table>
       <thead style="background-color: #8181e0;">
+          <th>ID</th>
         <th>PATIENTNAME</th>
-        <th>MESSAGE</th>
+        <th>EMAIL</th>
+        <th>PHONENUMBER</th>
         <th>STATUS</th>
-        <th></th>
+        <th>SCORE</th>
+        
       </thead>
       <tbody id='tbody'>
-        {% for msg in messagedata %}
-        <tr><td>{{msg.4}}</td>
-          <td>{{msg.2}}</td>
-        <td>{{msg.3}}</td>
-       
-        {% if msg.3 == None %}
-        <td><button onclick="replaymsg({{msg.0}})">Replay</button></td>
-        {%else%}
-        <td>Replied</td>
-        {% endif %}
-        </tr>
-        {% endfor %}
+        {% for data in patientdata %}
+        <tr><td>{{data.0}}</td>
+          <td>{{data.1}}</td>
+            <td>{{data.2}}</td>
+            <td>{{data.3}}</td>
+            <td>{{data.4}}</td>
+            <td>{{data.5}}</td>
+            {% endfor %}
       </tbody>
     </table>
   </div>  
-  <div id="container" style="display: none;">
   
-  
-    <div id="sendMsg">
-      <input id="typemsg" type="text" placeholder="type here.....">
-      <button onclick="sendRply(replaymsg.messageid,doctorid)"id="butmsgsend">SEND</button>
-    </div>
   </div>
 </div>
 </body>
@@ -254,8 +240,9 @@ button{
 
 }
 function viewpatientdata(id){
-   id=id             
-  window.location.href='viewpatientdata?doctorid='+id;
+     id=id 
+     console.log(id)          
+    window.location.href='viewpatientdata?doctorid='+id;
 
 }
 function backhmd(id){
